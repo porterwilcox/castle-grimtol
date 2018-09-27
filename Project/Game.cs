@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace CastleGrimtol.Project
 {
@@ -10,12 +11,13 @@ namespace CastleGrimtol.Project
         public Player CurrentPlayer { get; set; }
         public bool playing = true;
         Color color = new Color();
+        public int counter = 0;
 
         public void Setup()
         {
             //CREATE ROOMS W/ NAMES AND DESCRTIPTIONS
-            Room bedroom = new Room("Bedroom", $"You are in your bedroom. There's a window on one wall and a door to the hallway on the other. Your jacket is hung over the office chair near your bed.");
-            Room hallway = new Room("Hallway", "You are at the end of the hallway from which there are several places to go. You can hear your parents in the livingroom watching TV. If they were't there you'd be able to exit through the front door. The backdoor is unlocked and looks like a good escape route. It sounds like the kitchen is empty.");
+            Room bedroom = new Room("Bedroom", "You are in your bedroom. There's a window on one wall and a door to the hallway on the other. Your jacket is hung over the office chair near your bed.");
+            Room hallway = new Room("Hallway", "You sneak to the end of the hallway from which there are several places to go. You can hear your parents in the livingroom watching TV. If they were't there you'd be able to exit through the front door. The backdoor is unlocked and looks like a good escape route. It sounds like the kitchen is empty.");
             Room kitchen = new Room("Kitchen", "In kitchen the light is off you can't see much. You can't turn it on because your parents would be alerted of your presence. You make out the outlines of the FRIDGE, STOVE and dining TABLE. You can exit back to the HALLWAY.");
             Room livingroom = new Room("Livingroom", "In your livingroom you see the COUCH and the FRONTDOOR.");
             Room endOfBlock = new Room("End of Block", "You successfully snuck out of your house and made it to the end of your block! But you aren't quite at the full size candy bar neighborhood yet. From where you're standing you can go to the PUMPKIN PATCH, CORN MAZE or continue down the STREET.");
@@ -141,6 +143,12 @@ namespace CastleGrimtol.Project
                 return;
             }
             color.Cyan(CurrentRoom.Items[itemName].Description);
+            if (itemName == "backdoor")
+            {
+                Thread.Sleep(5000);
+                color.Red("\nYou got busted! Game Over.");
+                playing = false;
+            }
         }
         public void Inventory()
         {
@@ -171,7 +179,7 @@ namespace CastleGrimtol.Project
                 early enough to get all the candy.");
             color.White("\n\nSubmit 'Help' at anytime to display these instructions.\n\n");
             color.White("Submit 'Look' at anytime to display your current location description.\n\n");
-            color.Red("Submit 'Quit' at anytime to quit gameplay.\n\n");
+            color.Red("Submit 'Quit' at anytime to quit the current game.\n\n");
             color.Yellow("Submit 'Enter' + a valid destination to go to that location.\n\n");
             color.Cyan("Submit 'Use' + a valid item name in your inventory to use that item.\n\n");
             color.Magenta("Submit 'Take' + a valid item to add that item to your inventory\n\n");
@@ -194,9 +202,14 @@ namespace CastleGrimtol.Project
             Console.Clear();
             Setup();
             CurrentPlayer = player;
-            Help();
-            System.Console.WriteLine("Press enter to continue");
-            Console.ReadLine();
+            CurrentPlayer.Inventory = new List<Item>();
+            // if (counter < 1)
+            // {
+                Help();
+                System.Console.WriteLine("Press enter to continue");
+                Console.ReadLine();
+            // }
+            counter++;
             while (playing)
             {
                 Console.Clear();
@@ -205,6 +218,13 @@ namespace CastleGrimtol.Project
                 System.Console.WriteLine("\nWhat do you do?");
                 GetUserInput();
             }
+            System.Console.WriteLine("Do you want to play again? (Y/N)");
+            if (Console.ReadLine().ToLower().Contains("n"))
+            {
+                return;
+            }
+            playing = true;
+            StartGame(CurrentPlayer);
         }
     }
 }
