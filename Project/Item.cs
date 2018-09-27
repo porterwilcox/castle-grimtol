@@ -6,11 +6,13 @@ namespace CastleGrimtol.Project
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool Takeable { get; set; }
 
-        public Item (string name, string description)
+        public Item (string name, string description, bool takeable)
         {
             Name = name;
             Description = description;
+            Takeable = takeable;
         }
     }
 }

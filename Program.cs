@@ -9,14 +9,17 @@ namespace CastleGrimtol
         public static void Main(string[] args)
         {
             Console.Clear();
+            var fc = Console.ForegroundColor;
+            var bc = Console.BackgroundColor;
             Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
             Color color = new Color();
             string name = "";
-            while(true)
+            while (true)
             {
                 System.Console.WriteLine("What's your name?");
                 name = Console.ReadLine();
-                if(name.Length < 1)
+                if (name.Length < 1)
                 {
                     continue;
                 }
@@ -30,12 +33,14 @@ namespace CastleGrimtol
             System.Console.WriteLine("\n\nYou are 12 years old. It's Halloween night and you're grounded because you wouldn't stop scaring your little sister with your Halloween costume. You're stuck in your room thinking about all the candy you're missing out on.");
             Thread.Sleep(5000);
             System.Console.WriteLine("\nYou decide to do something about this. Do you want to play? (Y/N)");
-            if(Console.ReadLine().ToLower().Contains("n"))
+            if (Console.ReadLine().ToLower().Contains("n"))
             {
                 return;
             }
             Game game = new Game();
             game.StartGame(player);
+            Console.BackgroundColor = bc;
+            Console.ForegroundColor = fc;
         }
     }
 }
