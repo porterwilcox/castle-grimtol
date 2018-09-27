@@ -7,7 +7,7 @@ namespace CastleGrimtol.Project
     {
         public Room CurrentRoom { get; set; }
         public Player CurrentPlayer { get; set; }
-
+        public bool playing = true;
         Color color = new Color();
 
         public void Setup()
@@ -51,10 +51,28 @@ namespace CastleGrimtol.Project
         }
         public void GetUserInput()
         {
-            
+            while(true)
+            {
+                string action = Console.ReadLine().ToLower();
+                if (action.Length < 4)
+                {
+                    continue;
+                }
+                if (action == "help")
+                {
+                    Help();
+                    break;
+                }
+                if (action == "quit")
+                {
+                    playing = false;
+                    break;
+                }
+            }
+
         }
 
-        public void Go(string direction)
+        public void Enter(string direction)
         {
             
         }
@@ -86,7 +104,19 @@ namespace CastleGrimtol.Project
 
         public void Help()
         {
-            
+            Console.Clear();
+            color.White("Game Instructions and Command Help:\n\n");
+            color.Magenta($@"Your mission: 
+                Sneak out of your house and get to the full size candy bar neighborhood 
+                early enough to get all the candy.");
+            color.White("\n\nSubmit 'Help' at anytime to display these instructions.\n\n");
+            color.White("Submit 'Look' at anytime to display your current location description.\n\n");
+            color.Red("Submit 'Quit' at anytime to quit gameplay.\n\n");
+            color.Yellow("Submit 'Enter' + a valid destination to go to that location.\n\n");
+            color.Cyan("Submit 'Take' + a valid item to add that item to your inventory\n\n");
+            color.Cyan("Submit 'Use' + a valid item name in your inventory to use that item.\n\n");
+            System.Console.WriteLine("Press enter to continue");
+            Console.ReadLine();
         }
 
 
@@ -106,6 +136,14 @@ namespace CastleGrimtol.Project
             Console.Clear();
             Setup();
             CurrentPlayer = player;
+            Help();
+            while(playing)
+            {
+                Console.Clear();
+                System.Console.WriteLine(CurrentRoom.Description);
+                System.Console.WriteLine("\nWhat do you do?");
+                GetUserInput();
+            }
         }
     }
 }
