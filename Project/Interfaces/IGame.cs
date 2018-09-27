@@ -14,7 +14,7 @@ namespace CastleGrimtol.Project
     void Reset();
 
     //Setup and Starts the Game loop
-    void StartGame();
+    void StartGame(Player player);
 
     //Gets the user input and calls the appropriate command
     void GetUserInput();
