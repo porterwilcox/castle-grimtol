@@ -10,6 +10,7 @@ namespace CastleGrimtol.Project
         public Room CurrentRoom { get; set; }
         public Player CurrentPlayer { get; set; }
         public bool win = false;
+        public bool quit = false;
         public bool playing = true;
         Color color = new Color();
         public int counter = 0;
@@ -19,13 +20,14 @@ namespace CastleGrimtol.Project
         {
             //CREATE ROOMS W/ NAMES AND DESCRTIPTIONS
             Room bedroom = new Room("Bedroom", "You are in your bedroom. There's a window on one wall and a door to the hallway on the other. Your jacket is hung over the office chair near your bed.");
-            Room hallway = new Room("Hallway", "You sneak to the end of the hallway from which there are several places to go. You can hear your parents in the livingroom watching TV. If they were't there you'd be able to exit through the front door. The backdoor is unlocked and looks like a good escape route. It sounds like the kitchen is empty.", false, "You return to the hallway and hide yourself in the shadow of the corner. As the stove timer sounds you hear both your parents move to the kitchen. You hear them discussing their confussion of the seemingly autonomous stove timer. You decide to use the backdoor or enter the livingroom in this brief moment of distraction you've created.");
+            Room hallway = new Room("Hallway", "You sneak to the end of the hallway from which there are several places to go. You can hear your parents in the livingroom watching TV. If they were't there you'd be able to exit through the front door. The backdoor is unlocked and looks like a good escape route. It sounds like the kitchen is empty.", false, "You return to the hallway and hide yourself in the shadow of the corner. As the stove timer sounds you hear both your parents move to the kitchen. You hear them discussing their confusion of the seemingly autonomous stove timer. You decide to use the backdoor or enter the livingroom in this brief moment of distraction you've created.");
             Room kitchen = new Room("Kitchen", "In kitchen the light is off so you can't see much. You can't turn it on because your parents would be alerted of your presence. You faintly see the fridge and dining table outlines from the stove clock light. You can go all the way through the kitchen to livingroom or turn back to the hallway again.");
             Room livingroom = new Room("Livingroom", "In the vacant livingroom you see the couch and a way outside through the front door.", true, $"'{CurrentPlayer.PlayerName.ToUpper()}! What are you doing out of bed?! You know you're grounded,' your parents sternly say to you as you enter the livingroom.");
-            Room outside = new Room("Outside", "You successfully snuck out of your house and made it to the end of your block! But you aren't at the full size candy bar lane yet. Good thing you brought your jacket to keep you warm. You see the pumpkin patch and corn maze to your left and beyond them the continuation of the street illuminated by a flickering traffic light.");
-            Room pumkinPatch = new Room("Pumkin Patch", "The pumpkin patch is dimly lit by the lights of the jack-o-lantern's. The hay crunches under your feet as you move about. You notice an unidenifiable SHAPE near a pumpkin through the darkness.  There's also a super large PUMPKIN and your very own JACK-O-LANTERN you carved the day before. You can exit to the CORN MAZE or the STREET.");
-            Room street = new Room("Street", "You are walking down the street which which will end at the neighborhood that hands out full size candy bars. However, you aren't even halfway to the neighborhood yet and it's getting late enough that the houses will stop greeting trick-or-treaters. You can continue down the STREET or go BACK to the end of your block.");
-            Room cornMaze = new Room("Corn Maze", "In the middle of the corn maze you can't see above the tall corn stalks. You remember how to get BACK but don't think you'll be able to navigate the rest of the maze in the dim light.");
+            Room outside = new Room("Outside", "You successfully snuck out of your house and made it to the end of your block! But you aren't at the full size candy bar lane yet. Good thing you brought your jacket to keep you warm. You see the pumpkinpatch and cornmaze to your left and beyond them the continuation of the street illuminated by a flickering traffic light.", true, "You snuck out of your house! But by the time you make it to the end of the block you are freezing in the cold October night. You realize that you won't be able to continue without your jacket and head back home to turn yourself in.");
+            Room pumkinPatch = new Room("Pumpkin Patch", "The pumpkin patch is dimly lit by the lights of the jack-o-lantern's. The hay crunches under your feet as you move about. You notice an unidenifiable shape near a pumpkin through the darkness. A few feet away is your very own jackolantern you carved the day before. The cornmaze or the street are your two available exits.");
+            Room cornMaze = new Room("Corn Maze", "In the middle of the corn maze you can't see above the tall corn stalks. You remember how to get back to the end of your block but don't think you'll be able to navigate the rest of the maze in the dim light.");
+            Room street = new Room("Street", "You are walking down the street which which will end at the neighborhood that hands out full size candy bars. However, since the road follows the perimeter of the corn field you aren't even halfway to the neighborhood yet. It's getting late enough that the houses will stop greeting trick-or-treaters soon. You can continue down the block or go back to the end of your block.");
+            Room block = new Room("block", "", true, "You continue on down the block in hopes of getting to the neighborhood in time. But all the porch lights are off and people are asleep by the time you make it to the neighborhood so you don't get of the delicious full size candy bars.");
             Room neighborhood = new Room("Neighborhood", "You've made it to the full size candy bar neighborhood in time to get all the candy bars!");
 
             //GIVE ROOMS THEIR EXITS
@@ -35,14 +37,15 @@ namespace CastleGrimtol.Project
             kitchen.Exits.Add("livingroom", livingroom);
             kitchen.Exits.Add("hallway", hallway);
             livingroom.Exits.Add("outside", outside);
-            outside.Exits.Add("patch", pumkinPatch);
-            outside.Exits.Add("maze", cornMaze);
+            outside.Exits.Add("pumpkinpatch", pumkinPatch);
+            outside.Exits.Add("cornmaze", cornMaze);
             outside.Exits.Add("street", street);
-            pumkinPatch.Exits.Add("maze", cornMaze);
+            pumkinPatch.Exits.Add("cornmaze", cornMaze);
             pumkinPatch.Exits.Add("street", street);
             cornMaze.Exits.Add("back", outside);
             cornMaze.Exits.Add("neighborhood", neighborhood);
             street.Exits.Add("back", outside);
+            street.Exits.Add("block", block);
 
             //CREATE ITEMS
             Item window = new Item("window", "You quietly open the window that you hope to escape through. The cool night breeze flows in and you realize that the shrubs have grown out of control and are blocking your escape. You close the window.");
@@ -53,6 +56,7 @@ namespace CastleGrimtol.Project
             Item stove = new Item("stove", "Ah ha! The stove's timer! You set the timer for 30 seconds.");
             Item couch = new Item("couch", "You take a seat on the empty sofa and get sucked into the TV. Your parents return from the kitchen and scold you for being out of bed.", false, true);
             Item jackOLantern = new Item("jackolantern", "a buck toothed pumpkin head emmiting light through the big old smile.", true);
+            Item shape = new Item("shape", "As you approach the shape it bolts towards you. 'MEOW!' sounds the startled cat as it bolts between your legs. You step suddenly to avoid crushing its tail and twist your ankle. You hobble home without any candy.", false, true);
 
 
             //GIVE ROOMS THEIR ITEMS
@@ -63,7 +67,8 @@ namespace CastleGrimtol.Project
             kitchen.Items.Add("table", table);
             kitchen.Items.Add("stove", stove);
             livingroom.Items.Add("couch", couch);
-            pumkinPatch.Items.Add("jackOLantern", jackOLantern);
+            pumkinPatch.Items.Add("jackolantern", jackOLantern);
+            pumkinPatch.Items.Add("shape", shape);
 
             //SETUP CURRENTROOM
             CurrentRoom = bedroom;
@@ -86,7 +91,7 @@ namespace CastleGrimtol.Project
                 if (action[0] == "quit")
                 {
                     playing = false;
-                    win = true; //this line will need to be modified
+                    quit = true; //this line will need to be modified
                     break;
                 }
                 if (action[0] == "use")
@@ -148,34 +153,63 @@ namespace CastleGrimtol.Project
                 System.Console.WriteLine($"The {itemName} is not a takeable item.");
                 return;
             }
+            if (itemName == "jacket")
+            {
+                CurrentRoom.Exits["hallway"].Exits["livingroom"].Exits["outside"].Losable = false;
+            }
             color.Magenta($"You pick up the {CurrentRoom.Items[itemName].Name}. It is {CurrentRoom.Items[itemName].Description}\n");
             color.White($"The {CurrentRoom.Items[itemName].Name} is now in your inventory.");
-            CurrentPlayer.Inventory.Add(CurrentRoom.Items[itemName]);
+            CurrentPlayer.Inventory.Add(CurrentRoom.Items[itemName].Name, CurrentRoom.Items[itemName]);
             CurrentRoom.Items.Remove(CurrentRoom.Items[itemName].Name);
         }
         public void UseItem(string itemName)
         {
             Console.Clear();
             //Here's where I'll account for items in the player's inventory
-            if (!CurrentRoom.Items.ContainsKey(itemName))
+            if (!CurrentRoom.Items.ContainsKey(itemName) && !CurrentPlayer.Inventory.ContainsKey(itemName))
             {
-                System.Console.WriteLine("That's not a valid item in this room.");
+                System.Console.WriteLine("That's not a valid item in either this room nor your inventory.");
 
                 return;
             }
-            if (CurrentRoom.Items[itemName].Takeable)
+            if (CurrentRoom.Items.ContainsKey(itemName))
             {
-                System.Console.WriteLine($"The {itemName} is not a useable item.");
+                if (CurrentRoom.Items[itemName].Takeable)
+                {
+                    System.Console.WriteLine($"The {itemName} is not a useable item.");
+                    return;
+                }
+                color.Cyan(CurrentRoom.Items[itemName].Description);
+                if (CurrentRoom.Items[itemName].Losable)
+                {
+                    playing = false;
+                }
+                if (itemName == "stove")
+                {
+                    timerSet = true;
+                }
                 return;
             }
-            color.Cyan(CurrentRoom.Items[itemName].Description);
-            if (CurrentRoom.Items[itemName].Losable)
+            if (itemName == "jackolantern")
             {
-                playing = false;
+                if (CurrentRoom.Name != "Corn Maze")
+                {
+                    System.Console.WriteLine("You take a look at your super cool jack-o-lantern, but it's not of much use to you in this spot.");
+                    return;
+                }
+                    System.Console.WriteLine("Jack-o-lantern for the win! The small candle light shines through the pumpkin's buck-toothed smile and illuminates the path in front of you. You navigate the through the corn maze and see the neighborhood shining bright with streetlights and trick-or-treaters.");
+                    CurrentRoom = CurrentRoom.Exits["neighborhood"];
+                    return;
             }
-            if (itemName == "stove")
+            if (itemName == "jacket")
             {
-                timerSet = true;
+                if (CurrentRoom.Name != "Outside" && CurrentRoom.Name != "Pumpkin Patch" && CurrentRoom.Name != "Corn Maze" && CurrentRoom.Name != "Street")
+                {
+                    System.Console.WriteLine("Good thinking to bring your jacket! It'll probably be cold outside.");
+                    return;
+                }
+                System.Console.WriteLine("The cold October air can't pierce through your hoody. You're glad you wore your jacket otherwise you'd probably of had to of aborted the mission.");
+                return;
             }
         }
         public void Inventory()
@@ -183,11 +217,11 @@ namespace CastleGrimtol.Project
             Console.Clear();
             if (CurrentPlayer.Inventory.Count >= 1)
             {
-                System.Console.WriteLine($"{CurrentPlayer.PlayerName}'s Inventory:\n");
-                foreach (Item item in CurrentPlayer.Inventory)
+                color.Cyan($"{CurrentPlayer.PlayerName}'s Inventory:\n");
+                foreach (KeyValuePair<string, Item> item in CurrentPlayer.Inventory)
                 {
-                    System.Console.WriteLine(item.Name);
-                    System.Console.WriteLine(item.Description + "\n");
+                    color.Cyan("\n" + item.Key + "\n");
+                    color.Cyan(item.Value.Description + "\n");
                 }
                 return;
             }
@@ -206,11 +240,11 @@ namespace CastleGrimtol.Project
                 Sneak out of your house and get to the full size candy bar neighborhood 
                 early enough to get all the candy.");
             color.White("\n\nSubmit 'Help' at anytime to display these instructions.\n\n");
-            color.White("Submit 'Look' at anytime to display your current location description.\n\n");
-            color.Red("Submit 'Quit' at anytime to quit the current game.\n\n");
             color.Yellow("Submit 'Enter' + a valid destination to go to that location.\n\n");
-            color.Cyan("Submit 'Use' + a valid item within the current room to use that item.\n\n");
+            color.Cyan("Submit 'Inventory' at anytime to display any items in your inventory.\n\n");
+            color.Cyan("Submit 'Use' + a valid item within the current room or a valid item within your inventory to use that item.\n\n");
             color.Magenta("Submit 'Take' + a valid item to add that item to your inventory.\n\n");
+            color.Red("Submit 'Quit' at anytime to quit the current game.\n\n");
         }
 
 
@@ -229,8 +263,9 @@ namespace CastleGrimtol.Project
         {
             Console.Clear();
             CurrentPlayer = player;
-            CurrentPlayer.Inventory = new List<Item>();
+            CurrentPlayer.Inventory = new Dictionary<string, Item>();
             timerSet = false;
+            win = false;
             Setup();
             // if (counter < 1)
             // {
@@ -244,14 +279,24 @@ namespace CastleGrimtol.Project
                 Console.Clear();
                 // System.Console.WriteLine(CurrentRoom.Description);
                 CurrentRoom.ColoredDescription(this);
+                if(CurrentRoom.Name == "Neighborhood")
+                {
+                    win = true;
+                    break;
+                }
                 System.Console.WriteLine("\n\nWhat do you do?");
                 GetUserInput();
             }
-            if (!playing && !win)
+            if (!playing && !quit)
             {
                 Thread.Sleep(5000);
                 color.Red("\nYou got busted! Game Over.\n");
                 Thread.Sleep(1000);
+            }
+            if (win)
+            {
+                System.Console.WriteLine($"\n\nCongratulations {CurrentPlayer.PlayerName}! You Won!\n");
+                Thread.Sleep(3000);
             }
             System.Console.WriteLine("Do you want to play again? (Y/N)");
             if (Console.ReadLine().ToLower().Contains("n"))

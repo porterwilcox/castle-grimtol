@@ -5,6 +5,6 @@ namespace CastleGrimtol.Project
   public interface IPlayer
   {
     string PlayerName { get; set; }
-    List<Item> Inventory { get; set; }
+    Dictionary<string, Item> Inventory { get; set; }
   }
 }
