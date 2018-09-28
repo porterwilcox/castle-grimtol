@@ -17,7 +17,12 @@ namespace CastleGrimtol.Project
         public void ColoredDescription(Game game)
         {
             string description = "";
-            if (!game.CurrentRoom.Losable)
+            if (game.CurrentRoom.Name == "Hallway" && game.timerSet == true)
+            {
+                description = game.CurrentRoom.AltDescription;
+                game.CurrentRoom.Exits["livingroom"].Losable = false;
+            }
+            else if (!game.CurrentRoom.Losable)
             {
                 description = game.CurrentRoom.Description;
             }
