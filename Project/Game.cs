@@ -46,13 +46,13 @@ namespace CastleGrimtol.Project
 
             //CREATE ITEMS
             Item window = new Item("window", "You quietly open the window that you hope to escape through. The cool night breeze flows in and you realize that the shrubs have grown out of control and are blocking your escape. You close the window.");
-            Item jacket = new Item("Jacket", "your go to black hoody.", true);
+            Item jacket = new Item("jacket", "your go to black hoody.", true);
             Item backdoor = new Item("backdoor", "You open the backdoor quietly so your parents don't hear you. As you begin to slide out the opening your dog comes running up and bolts inside the house. Your parents investigate how the dog got inside and catch you in the act of escaping!", false, true);
             Item fridge = new Item("fridge", "Out of seemingly habit you open up the fridge. *THUD!* sounds the falling ketchap as it hits the ground. Your parents investigate the sound and send you to your room immediately!", false, true);
-            Item table = new Item("table", "As you pull out a dining table chair it screeches across the floor. Your parents storm into the kitchen and ground you for an additional week for being out of your room.", false, true);
+            Item table = new Item("table", "You quietly take a seat at the table as you ponder how you're going to sneak out of your house. After brainstorming, you're ready for action. You stand up again.");
             Item stove = new Item("stove", "Ah ha! The stove's timer! You set the timer for 30 seconds.");
             Item couch = new Item("couch", "You take a seat on the empty sofa and get sucked into the TV. Your parents return from the kitchen and scold you for being out of bed.", false, true);
-            Item jackOLantern = new Item("Jack-O-Lantern", "a buck toothed pumpkin head emmiting light through the big old smile.", true);
+            Item jackOLantern = new Item("jackolantern", "a buck toothed pumpkin head emmiting light through the big old smile.", true);
 
 
             //GIVE ROOMS THEIR ITEMS
