@@ -8,13 +8,24 @@ namespace CastleGrimtol.Project
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public bool Losable { get; set; }
+        public string AltDescription { get; set; }
         public Dictionary<string, Item> Items { get; set; }
         public Dictionary<string, Room> Exits { get; set; }
         Color color = new Color();
 
         public void ColoredDescription(Game game)
         {
-            string description = game.CurrentRoom.Description;
+            string description = "";
+            if (!game.CurrentRoom.Losable)
+            {
+                description = game.CurrentRoom.Description;
+            }
+            else
+            {
+                description = game.CurrentRoom.AltDescription;
+                game.playing = false;
+            }
             string pattern = @"\s+";
             string[] words = Regex.Split(description, pattern);
             for (int i = 0; i < words.Length; i++)
@@ -41,10 +52,12 @@ namespace CastleGrimtol.Project
                 Console.Write(word + " ");
             }
         }
-        public Room (string name, string description)
+        public Room (string name, string description, bool losable = false, string altDescription = null)
         {
             Name = name;
             Description = description;
+            Losable = losable;
+            AltDescription = altDescription;
             Items = new Dictionary<string, Item>();
             Exits = new Dictionary<string, Room>();
         }

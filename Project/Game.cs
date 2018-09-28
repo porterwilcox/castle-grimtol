@@ -19,8 +19,8 @@ namespace CastleGrimtol.Project
             Room bedroom = new Room("Bedroom", "You are in your bedroom. There's a window on one wall and a door to the hallway on the other. Your jacket is hung over the office chair near your bed.");
             Room hallway = new Room("Hallway", "You sneak to the end of the hallway from which there are several places to go. You can hear your parents in the livingroom watching TV. If they were't there you'd be able to exit through the front door. The backdoor is unlocked and looks like a good escape route. It sounds like the kitchen is empty.");
             Room kitchen = new Room("Kitchen", "In kitchen the light is off you can't see much. You can't turn it on because your parents would be alerted of your presence. You make out the outlines of the FRIDGE, STOVE and dining TABLE. You can exit back to the HALLWAY.");
-            Room livingroom = new Room("Livingroom", "In your livingroom you see the COUCH and the FRONTDOOR.");
-            Room endOfBlock = new Room("End of Block", "You successfully snuck out of your house and made it to the end of your block! But you aren't quite at the full size candy bar neighborhood yet. From where you're standing you can go to the PUMPKIN PATCH, CORN MAZE or continue down the STREET.");
+            Room livingroom = new Room("Livingroom", "In the vacant livingroom you see the couch and a way outside through the front door.", true, $"'{CurrentPlayer.PlayerName.ToUpper()}! What are you doing out of bed?! You know you're grounded,' your parents sternly say to you as you enter the livingroom.");
+            Room outside = new Room("Outside", "You successfully snuck out of your house and made it to the end of your block! But you aren't at the full size candy bar lane yet. Good thing you brought your jacket to keep you warm. You see the pumpkin patch and corn maze to your left and beyond them the continuation of the street illuminated by a flickering traffic light.");
             Room pumkinPatch = new Room("Pumkin Patch", "The pumpkin patch is dimly lit by the lights of the jack-o-lantern's. The hay crunches under your feet as you move about. You notice an unidenifiable SHAPE near a pumpkin through the darkness.  There's also a super large PUMPKIN and your very own JACK-O-LANTERN you carved the day before. You can exit to the CORN MAZE or the STREET.");
             Room street = new Room("Street", "You are walking down the street which which will end at the neighborhood that hands out full size candy bars. However, you aren't even halfway to the neighborhood yet and it's getting late enough that the houses will stop greeting trick-or-treaters. You can continue down the STREET or go BACK to the end of your block.");
             Room cornMaze = new Room("Corn Maze", "In the middle of the corn maze you can't see above the tall corn stalks. You remember how to get BACK but don't think you'll be able to navigate the rest of the maze in the dim light.");
@@ -31,27 +31,29 @@ namespace CastleGrimtol.Project
             hallway.Exits.Add("kitchen", kitchen);
             hallway.Exits.Add("livingroom", livingroom);
             kitchen.Exits.Add("hallway", hallway);
-            livingroom.Exits.Add("frontdoor", endOfBlock);
-            endOfBlock.Exits.Add("pumpkinpatch", pumkinPatch);
-            endOfBlock.Exits.Add("cornmaze", cornMaze);
-            endOfBlock.Exits.Add("street", street);
+            livingroom.Exits.Add("outside", outside);
+            outside.Exits.Add("pumpkinpatch", pumkinPatch);
+            outside.Exits.Add("cornmaze", cornMaze);
+            outside.Exits.Add("street", street);
             pumkinPatch.Exits.Add("cornmaze", cornMaze);
             pumkinPatch.Exits.Add("street", street);
-            cornMaze.Exits.Add("back", endOfBlock);
+            cornMaze.Exits.Add("back", outside);
             cornMaze.Exits.Add("neighborhood", neighborhood);
-            street.Exits.Add("back", endOfBlock);
+            street.Exits.Add("back", outside);
 
             //CREATE ITEMS
-            Item jacket = new Item("jacket", "your go to black hoody.", true);
-            Item jackOLantern = new Item("jackolantern", "a buck toothed pumpkin head emmiting light through the big old smile.", true);
-            Item backdoor = new Item("backdoor", "You open the backdoor quietly so your parents don't hear you. As you begin to slide out the opening your dog comes running up and bolts inside the house. Your parents investigate how the dog got inside and catch you in the act of escaping!", false);
             Item window = new Item("window", "You quietly open the window that you hope to escape through. The cool night breeze flows in and you realize that the shrubs have grown out of control and are blocking your escape. You close the window.", false);
+            Item jacket = new Item("jacket", "your go to black hoody.", true);
+            Item backdoor = new Item("backdoor", "You open the backdoor quietly so your parents don't hear you. As you begin to slide out the opening your dog comes running up and bolts inside the house. Your parents investigate how the dog got inside and catch you in the act of escaping!", false);
+            Item couch = new Item("couch", "You take a seat on the empty sofa and get sucked into the TV. Your parents return from the kitchen and scold you for being out of bed.", false);
+            Item jackOLantern = new Item("jackolantern", "a buck toothed pumpkin head emmiting light through the big old smile.", true);
 
 
             //GIVE ROOMS THEIR ITEMS
             bedroom.Items.Add("jacket", jacket);
             bedroom.Items.Add("window", window);
             hallway.Items.Add("backdoor", backdoor);
+            livingroom.Items.Add("couch", couch);
             pumkinPatch.Items.Add("jackOLantern", jackOLantern);
 
             //SETUP CURRENTROOM
@@ -62,7 +64,7 @@ namespace CastleGrimtol.Project
             while (true)
             {
                 string input = Console.ReadLine().ToLower();
-                string pattern = @"\s+";
+                string pattern = @"\s";
                 string[] action = Regex.Split(input, pattern);
                 if (action[0] == "help")
                 {
@@ -90,7 +92,7 @@ namespace CastleGrimtol.Project
                     Enter(action[1]);
                     break;
                 }
-                System.Console.WriteLine("\nPress enter to continue");
+                System.Console.WriteLine("\n\nPress enter to continue");
                 Console.ReadLine();
                 break;
             }
@@ -145,6 +147,10 @@ namespace CastleGrimtol.Project
             color.Cyan(CurrentRoom.Items[itemName].Description);
             if (itemName == "backdoor")
             {
+                //
+                //START HERE AND MOVE THESE LINES OF CODE TO ACCOUNT FOR LOSABLE ROOMS!!!!
+                //
+
                 Thread.Sleep(5000);
                 color.Red("\nYou got busted! Game Over.");
                 playing = false;
@@ -181,8 +187,8 @@ namespace CastleGrimtol.Project
             color.White("Submit 'Look' at anytime to display your current location description.\n\n");
             color.Red("Submit 'Quit' at anytime to quit the current game.\n\n");
             color.Yellow("Submit 'Enter' + a valid destination to go to that location.\n\n");
-            color.Cyan("Submit 'Use' + a valid item name in your inventory to use that item.\n\n");
-            color.Magenta("Submit 'Take' + a valid item to add that item to your inventory\n\n");
+            color.Cyan("Submit 'Use' + a valid item within the current room to use that item.\n\n");
+            color.Magenta("Submit 'Take' + a valid item to add that item to your inventory.\n\n");
         }
 
 
@@ -200,9 +206,9 @@ namespace CastleGrimtol.Project
         public void StartGame(Player player)
         {
             Console.Clear();
-            Setup();
             CurrentPlayer = player;
             CurrentPlayer.Inventory = new List<Item>();
+            Setup();
             // if (counter < 1)
             // {
                 Help();
@@ -215,7 +221,7 @@ namespace CastleGrimtol.Project
                 Console.Clear();
                 // System.Console.WriteLine(CurrentRoom.Description);
                 CurrentRoom.ColoredDescription(this);
-                System.Console.WriteLine("\nWhat do you do?");
+                System.Console.WriteLine("\n\nWhat do you do?");
                 GetUserInput();
             }
             System.Console.WriteLine("Do you want to play again? (Y/N)");
