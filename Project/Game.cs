@@ -94,6 +94,10 @@ namespace CastleGrimtol.Project
                     quit = true; //this line will need to be modified
                     break;
                 }
+                if (action.Length < 2)
+                {
+                    return;
+                }
                 if (action[0] == "use")
                 {
                     UseItem(action[1]);
@@ -197,9 +201,9 @@ namespace CastleGrimtol.Project
                     System.Console.WriteLine("You take a look at your super cool jack-o-lantern, but it's not of much use to you in this spot.");
                     return;
                 }
-                    System.Console.WriteLine("Jack-o-lantern for the win! The small candle light shines through the pumpkin's buck-toothed smile and illuminates the path in front of you. You navigate the through the corn maze and see the neighborhood shining bright with streetlights and trick-or-treaters.");
-                    CurrentRoom = CurrentRoom.Exits["neighborhood"];
-                    return;
+                System.Console.WriteLine("Jack-o-lantern for the win! The small candle light shines through the pumpkin's buck-toothed smile and illuminates the path in front of you. You navigate the through the corn maze and see the neighborhood shining bright with streetlights and trick-or-treaters.");
+                CurrentRoom = CurrentRoom.Exits["neighborhood"];
+                return;
             }
             if (itemName == "jacket")
             {
@@ -279,7 +283,7 @@ namespace CastleGrimtol.Project
                 Console.Clear();
                 // System.Console.WriteLine(CurrentRoom.Description);
                 CurrentRoom.ColoredDescription(this);
-                if(CurrentRoom.Name == "Neighborhood")
+                if (CurrentRoom.Name == "Neighborhood")
                 {
                     win = true;
                     break;
