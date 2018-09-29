@@ -84,17 +84,17 @@ namespace CastleGrimtol.Project
                 {
                     Help();
                 }
-                if (action[0] == "inventory")
+                else if (action[0] == "inventory")
                 {
                     Inventory();
                 }
-                if (action[0] == "quit")
+                else if (action[0] == "quit")
                 {
                     playing = false;
                     quit = true; //this line will need to be modified
                     break;
                 }
-                if (action.Length < 2)
+                else if (action.Length < 2)
                 {
                     return;
                 }
