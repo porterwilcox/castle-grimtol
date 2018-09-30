@@ -27,7 +27,7 @@ namespace CastleGrimtol.Project
             Room pumkinPatch = new Room("Pumpkin Patch", "The pumpkin patch is dimly lit by the lights of the jack-o-lantern's. The hay crunches under your feet as you move about. You notice an unidenifiable shape near a pumpkin through the darkness. A few feet away is your very own jackolantern you carved the day before. The cornmaze or the street are your two available exits.");
             Room cornMaze = new Room("Corn Maze", "In the middle of the corn maze you can't see above the tall corn stalks. You remember how to get back to the end of your block but don't think you'll be able to navigate the rest of the maze in the dim light.");
             Room street = new Room("Street", "You are walking down the street which which will end at the neighborhood that hands out full size candy bars. However, since the road follows the perimeter of the corn field you aren't even halfway to the neighborhood yet. It's getting late enough that the houses will stop greeting trick-or-treaters soon. You can continue down the block or go back to the end of your block.");
-            Room block = new Room("block", "", true, "You continue on down the block in hopes of getting to the neighborhood in time. But all the porch lights are off and people are asleep by the time you make it to the neighborhood so you don't get of the delicious full size candy bars.");
+            Room block = new Room("block", "", true, "You continue on down the block in hopes of getting to the neighborhood in time. But all the porch lights are off and people are asleep by the time you make it to the neighborhood, so you don't get of the delicious full size candy bars.");
             Room neighborhood = new Room("Neighborhood", "You've made it to the full size candy bar neighborhood in time to get all the candy bars!");
 
             //GIVE ROOMS THEIR EXITS
@@ -43,7 +43,7 @@ namespace CastleGrimtol.Project
             pumkinPatch.Exits.Add("cornmaze", cornMaze);
             pumkinPatch.Exits.Add("street", street);
             cornMaze.Exits.Add("back", outside);
-            cornMaze.Exits.Add("neighborhood", neighborhood);
+            cornMaze.Exits.Add("specialTopSecretKey", neighborhood);
             street.Exits.Add("back", outside);
             street.Exits.Add("block", block);
 
@@ -198,11 +198,11 @@ namespace CastleGrimtol.Project
             {
                 if (CurrentRoom.Name != "Corn Maze")
                 {
-                    System.Console.WriteLine("You take a look at your super cool jack-o-lantern, but it's not of much use to you in this spot.");
+                    System.Console.WriteLine("You take a look at your super cool jack-o-lantern, but it's not of much use to you at this location.");
                     return;
                 }
-                System.Console.WriteLine("Jack-o-lantern for the win! The small candle light shines through the pumpkin's buck-toothed smile and illuminates the path in front of you. You navigate the through the corn maze and see the neighborhood shining bright with streetlights and trick-or-treaters.");
-                CurrentRoom = CurrentRoom.Exits["neighborhood"];
+                System.Console.WriteLine("Jack-o-lantern for the win! The small candle light shines through the pumpkin's buck-toothed smile and illuminates the path in front of you. You navigate the through the corn maze and see the hustle of the neighborhood's trick-or-treaters making rounds to all houses.");
+                CurrentRoom = CurrentRoom.Exits["specialTopSecretKey"];
                 return;
             }
             if (itemName == "jacket")
@@ -221,11 +221,11 @@ namespace CastleGrimtol.Project
             Console.Clear();
             if (CurrentPlayer.Inventory.Count >= 1)
             {
-                color.Cyan($"{CurrentPlayer.PlayerName}'s Inventory:\n");
+                color.White($"{CurrentPlayer.PlayerName}'s Inventory:\n");
                 foreach (KeyValuePair<string, Item> item in CurrentPlayer.Inventory)
                 {
                     color.Cyan("\n" + item.Key + "\n");
-                    color.Cyan(item.Value.Description + "\n");
+                    color.White(item.Value.Description + "\n");
                 }
                 return;
             }
