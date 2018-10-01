@@ -94,6 +94,10 @@ namespace CastleGrimtol.Project
                     quit = true; //this line will need to be modified
                     break;
                 }
+                else if (action[0] == "look")
+                {
+                    Look();
+                }
                 else if (action.Length < 2)
                 {
                     return;
@@ -233,7 +237,9 @@ namespace CastleGrimtol.Project
         }
         public void Look()
         {
-
+            Console.Clear();
+            System.Console.WriteLine("You are now 'looking', though this isn't super necessary since you're always 'looking'.\n");
+            CurrentRoom.ColoredDescription(this);
         }
 
         public void Help()
