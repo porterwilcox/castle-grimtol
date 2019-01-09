@@ -30,7 +30,7 @@ namespace CastleGrimtol.Project
         }
         public void Yellow(string text)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write(text + " ");
             Console.ForegroundColor = ConsoleColor.Green;
         }
